@@ -219,10 +219,11 @@ public class Shop {
 	 * read inventory from file
 	 */
 	private void readInventory() {
+//		System.out.println(dao.getInventory());
 		setInventory(dao.getInventory());
 	}
 	
-	private boolean writeInventory() {
+	public boolean writeInventory() {
 		return dao.writeInventory(inventory);
 	}
 

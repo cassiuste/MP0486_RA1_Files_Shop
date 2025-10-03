@@ -113,6 +113,7 @@ public class DaoImplFile implements Dao {
 			
 			// write line by line
 			int productId=1;
+			System.out.println(products);
 			for (Product product : products) {
 				
 				// Line = 1;Product:Manzana;Stock:10;
@@ -122,14 +123,12 @@ public class DaoImplFile implements Dao {
 
 				// format first line TO BE -> 1;Product:Manzana;Stock:10;
 				StringBuilder line = new StringBuilder(productId+";Product:"+product.getName()+";Stock:"+product.getStock()+";");
-				pw.write(line.toString());
-				fw.write("\n");
+				pw.println(line.toString());
 				
 				// increment counter sales
 				productId++;
 			}
-				pw.write("Total number of products:"+products.size()+";");
-				fw.write("\n");
+				pw.println("Total number of products:"+products.size()+";");
 
 			// close files
 			pw.close();
