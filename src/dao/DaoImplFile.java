@@ -108,27 +108,31 @@ public class DaoImplFile implements Dao {
 		try {
 			// wrap in proper classes
 			FileWriter fw;
-			fw = new FileWriter(f, true);
+			// changed it to rewrite instead of appending
+			fw = new FileWriter(f, false);
 			PrintWriter pw = new PrintWriter(fw);
 			
 			// write line by line
 			int productId=1;
-			System.out.println(products);
+//			System.out.println(products);
 			for (Product product : products) {
 				
 				// Line = 1;Product:Manzana;Stock:10;
 				
-//				2;Product:Fresa;Stock:20;
-//				Total number of products:2;
+				// 2;Product:Fresa;Stock:20;
+				// Total number of products:2;
 
 				// format first line TO BE -> 1;Product:Manzana;Stock:10;
 				StringBuilder line = new StringBuilder(productId+";Product:"+product.getName()+";Stock:"+product.getStock()+";");
-				pw.println(line.toString());
+				System.out.println(line.toString());
+				pw.write(line.toString());
+				fw.write("\n");
 				
 				// increment counter sales
 				productId++;
 			}
-				pw.println("Total number of products:"+products.size()+";");
+				pw.write("Total number of products:"+products.size()+";");
+				fw.write("\n");
 
 			// close files
 			pw.close();
