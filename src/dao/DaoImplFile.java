@@ -114,17 +114,10 @@ public class DaoImplFile implements Dao {
 			
 			// write line by line
 			int productId=1;
-//			System.out.println(products);
 			for (Product product : products) {
 				
-				// Line = 1;Product:Manzana;Stock:10;
-				
-				// 2;Product:Fresa;Stock:20;
-				// Total number of products:2;
-
 				// format first line TO BE -> 1;Product:Manzana;Stock:10;
 				StringBuilder line = new StringBuilder(productId+";Product:"+product.getName()+";Stock:"+product.getStock()+";");
-				System.out.println(line.toString());
 				pw.write(line.toString());
 				fw.write("\n");
 				

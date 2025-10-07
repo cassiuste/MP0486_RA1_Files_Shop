@@ -219,7 +219,6 @@ public class Shop {
 	 * read inventory from file
 	 */
 	private void readInventory() {
-//		System.out.println(dao.getInventory());
 		setInventory(dao.getInventory());
 	}
 	
