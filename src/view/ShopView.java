@@ -2,24 +2,28 @@ package view;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import main.Shop;
+import model.Product;
 import utils.Constants;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
 import java.awt.Font;
+import java.awt.List;
+
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class ShopView extends JFrame implements ActionListener, KeyListener{
@@ -29,6 +33,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 	private JPanel contentPane;
 	private JButton btnExportInventory;
 	private JButton btnShowCash;
+	private JButton btnShowInventory;
 	private JButton btnAddProduct;
 	private JButton btnAddStock;
 	private JButton btnRemoveProduct;
@@ -122,12 +127,21 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		contentPane.add(btnAddStock);
 		// listen button
 		btnAddStock.addActionListener(this);
-
+		
+		// option display inventory
+		btnShowInventory = new JButton("4. Mostrar inventario");
+		btnShowInventory.setHorizontalAlignment(SwingConstants.LEFT);
+		btnShowInventory.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		btnShowInventory.setBounds(99, 240, 236, 40);
+		contentPane.add(btnShowInventory);
+		// listen button
+		btnShowInventory.addActionListener(this);
+		
 		// option add product
 		btnRemoveProduct = new JButton("9. Eliminar producto");
 		btnRemoveProduct.setHorizontalAlignment(SwingConstants.LEFT);
 		btnRemoveProduct.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		btnRemoveProduct.setBounds(99, 240, 236, 40);
+		btnRemoveProduct.setBounds(99, 290, 236, 40);
 		contentPane.add(btnRemoveProduct);
 		// listen button
 		btnRemoveProduct.addActionListener(this);
@@ -154,6 +168,9 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		}
 		if (e.getKeyChar() == '3') {
 			this.openProductView(Constants.OPTION_ADD_STOCK);
+		}
+		if (e.getKeyChar() == '4') {
+			this.openProductView(Constants.OPTION_SHOW_INVENTORY);
 		}
 		if (e.getKeyChar() == '9') {
 			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);
@@ -187,10 +204,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 		if (e.getSource() == btnAddStock) {
 			this.openProductView(Constants.OPTION_ADD_STOCK);				
 		}
+		if (e.getSource() == btnShowInventory) {
+			this.openInventoryView(shop.getInventory());
+		}
 		if (e.getSource() == btnRemoveProduct) {
 			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);				
 		}
-		
 	}
 
 	
@@ -205,6 +224,12 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
         // set visibility of dialog
         dialog.setModal(true);
         dialog.setVisible(true);
+	}
+	
+	public void openInventoryView(ArrayList<Product> inventory) {
+		InventoryView inventoryView = new InventoryView(inventory);
+		inventoryView.setSize(400, 400);
+		inventoryView.setVisible(true);
 	}
 	
 	/**
