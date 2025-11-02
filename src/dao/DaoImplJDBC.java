@@ -5,9 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-
+import model.Amount;
 import model.Employee;
 import model.Product;
 
@@ -66,14 +65,61 @@ public class DaoImplJDBC implements Dao {
 
 	@Override
 	public ArrayList<Product> getInventory() {
-		// TODO Auto-generated method stub
-		return null;
+		this.connect();
+		
+		String query = "select * from inventory";
+		ArrayList<Product> inventory = new ArrayList<Product>();
+		try (PreparedStatement ps = connection.prepareStatement(query)) { 
+            try (ResultSet rs = ps.executeQuery()) {
+            	while (rs.next()) {
+            		Product product = new Product(rs.getInt("id"), rs.getString("name"),
+			            			    new Amount(rs.getDouble("wholesalerPrice")),rs.getBoolean("available"),
+			            			    rs.getInt("stock"));
+            		inventory.add(product);
+            	}
+            }
+        } catch (SQLException e) {
+			// in case error in SQL
+			e.printStackTrace();
+		}
+		
+		this.disconnect();
+		return inventory;
 	}
 
 	@Override
 	public boolean writeInventory(ArrayList<Product> products) {
+		this.connect();
+		String query = "INSERT INTO historical_inventory (id_product, name, wholesalerPrice, available, stock) " +
+		        		"SELECT id, name, wholesalerPrice, available, stock " +
+		        		"FROM inventory;";
+		boolean result = false;
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+	        int rowsInserted = ps.executeUpdate();
+	        result =  rowsInserted > 0;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		this.disconnect();
+		return result;
+	}
+
+	@Override
+	public void addProduct(Product product) {
 		// TODO Auto-generated method stub
-		return false;
+		
+	}
+
+	@Override
+	public void updateProduct(Product product) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteProduct(int productId) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

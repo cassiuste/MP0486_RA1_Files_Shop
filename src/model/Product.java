@@ -21,6 +21,16 @@ public class Product {
 		this.stock = stock;
 		totalProducts++;
 	}
+	
+	public Product(int id, String name, Amount wholesalerPrice, boolean available, int stock) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.wholesalerPrice = wholesalerPrice;
+		this.publicPrice = new Amount(wholesalerPrice.getValue() * 2);
+		this.available = available;
+		this.stock = stock;
+	}
 
 	public int getId() {
 		return id;

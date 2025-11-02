@@ -23,7 +23,7 @@ import dao.DaoImplJDBC;
 
 public class Shop {
 	
-	private Dao dao = new DaoImplFile();
+	private Dao dao = new DaoImplJDBC();
 	private Amount cash = new Amount(100.00);
 //	private Product[] inventory;
 	private ArrayList<Product> inventory;
