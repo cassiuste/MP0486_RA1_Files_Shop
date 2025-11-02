@@ -16,4 +16,10 @@ public interface Dao {
 	public boolean writeInventory(ArrayList<Product> products);
 	
 	public Employee getEmployee(int employeeId, String password);
+	
+	public void addProduct(Product product); 
+
+	public void updateProduct(Product product); 
+	
+	public void deleteProduct(int productId); 
 }
