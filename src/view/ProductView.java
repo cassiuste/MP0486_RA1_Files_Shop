@@ -180,7 +180,8 @@ public class ProductView extends JDialog implements ActionListener{
 					JOptionPane.showMessageDialog(null, "Producto no existe ", "Error",
 							JOptionPane.ERROR_MESSAGE);
 					
-				} else {					
+				} else {	
+					// Realizar el Shop con el DAO
 					product.setStock(product.getStock() + Integer.parseInt(textFieldStock.getText()));
 					JOptionPane.showMessageDialog(null, "Stock actualizado ", "Information",
 							JOptionPane.INFORMATION_MESSAGE);
