@@ -491,12 +491,17 @@ public class Shop {
 			return;
 		}
 		dao.addProduct(product);
-		
 //		inventory.add(product);
 		numberProducts++;
 	}
 	
+	public void updateProduct(Product product) {
+		dao.updateProduct(product);
+	}
 	
+	public void deleteProduct(int productId) {
+		dao.deleteProduct(productId);
+	}
 
 	/**
 	 * check if inventory is full or not
