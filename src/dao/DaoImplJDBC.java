@@ -106,19 +106,57 @@ public class DaoImplJDBC implements Dao {
 
 	@Override
 	public void addProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+		this.connect();
+		String query = "INSERT INTO inventory (name, wholesalerPrice, available, stock) " +
+		        		"VALUES (?,?,?,?)";
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setString(1,product.getName());
+
+			Amount amount = product.getWholesalerPrice();
+			double amountValue = amount.getValue();
+    	  	ps.setDouble(2,amountValue);
+    	  	
+    	  	ps.setBoolean(3,product.isAvailable());
+    	  	ps.setInt(4,product.getStock());
+			int rowsInserted = ps.executeUpdate();
+			
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		this.disconnect();		
 	}
 
 	@Override
 	public void updateProduct(Product product) {
-		// TODO Auto-generated method stub
+		this.connect();
+		String query = "update inventory set stock=? where name=?";
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setString(1,product.getName());
+    	  	ps.setInt(2,product.getStock());
+			ps.executeUpdate();
+			
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		this.disconnect();	
 		
 	}
 
 	@Override
 	public void deleteProduct(int productId) {
-		// TODO Auto-generated method stub
+		this.connect();
+		String query = "delete from inventory where id=?";
+		try (PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setInt(1,productId);
+			ps.executeUpdate();
+			
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+		this.disconnect();	
 		
 	}
 
