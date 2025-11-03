@@ -52,7 +52,7 @@ public class Shop {
 	}
 
 
-
+	// Dao.getInventory ?
 	public ArrayList<Product> getInventory() {
 		return inventory;
 	}
@@ -493,14 +493,17 @@ public class Shop {
 		dao.addProduct(product);
 //		inventory.add(product);
 		numberProducts++;
+		this.readInventory();
 	}
 	
 	public void updateProduct(Product product) {
 		dao.updateProduct(product);
+		this.readInventory();
 	}
 	
 	public void deleteProduct(int productId) {
 		dao.deleteProduct(productId);
+		this.readInventory();
 	}
 
 	/**
