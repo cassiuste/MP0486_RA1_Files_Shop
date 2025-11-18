@@ -184,12 +184,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == btnExportInventory) {
-			if(shop.writeInventory()) {
-				JOptionPane.showMessageDialog(this, "Inventario exportado correctamente", "Informacion", JOptionPane.INFORMATION_MESSAGE);
-			}
-			else {
-				 JOptionPane.showMessageDialog(this, "Error exportando el inventario", "Error", JOptionPane.ERROR_MESSAGE);
-			}
+			this.exportInventoryView();
 		}
 		if (e.getSource() == btnShowCash) {
 			this.openCashView();						
@@ -241,5 +236,13 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
         dialog.setVisible(true);
 	}
 	
+	public void exportInventoryView() {
+		if(shop.writeInventory()) {
+			JOptionPane.showMessageDialog(this, "Inventario exportado correctamente", "Informacion", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else {
+			 JOptionPane.showMessageDialog(this, "Error exportando el inventario", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
 	
 }
