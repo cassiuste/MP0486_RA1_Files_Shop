@@ -205,7 +205,7 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
 			this.openProductView(Constants.OPTION_ADD_STOCK);				
 		}
 		if (e.getSource() == btnShowInventory) {
-			this.openInventoryView(shop.getInventory());
+			this.openInventoryView(shop);
 		}
 		if (e.getSource() == btnRemoveProduct) {
 			this.openProductView(Constants.OPTION_REMOVE_PRODUCT);				
@@ -226,8 +226,8 @@ public class ShopView extends JFrame implements ActionListener, KeyListener{
         dialog.setVisible(true);
 	}
 	
-	public void openInventoryView(ArrayList<Product> inventory) {
-		InventoryView inventoryView = new InventoryView(inventory);
+	public void openInventoryView(Shop shop) {
+		InventoryView inventoryView = new InventoryView(shop);
 		inventoryView.setSize(400, 400);
 		inventoryView.setVisible(true);
 	}

@@ -1,19 +1,18 @@
 package view;
 
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import main.Shop;
 import model.Product;
 
 public class InventoryView extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    public InventoryView(ArrayList<Product> inventory) {
+    public InventoryView(Shop shop) {
         String[] columnNames = {"ID", "Nombre", "Precio Público", "Precio Mayorista", "Disponible", "Stock"};
 
         DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0) {
@@ -23,7 +22,7 @@ public class InventoryView extends JFrame {
             }
         };
 
-        for (Product p : inventory) {
+        for (Product p : shop.getInventory()) {
             Object[] row = {
                 p.getId(),
                 p.getName(),

@@ -133,8 +133,8 @@ public class DaoImplJDBC implements Dao {
 		String query = "update inventory set stock=? where name=?";
 		try (PreparedStatement ps = connection.prepareStatement(query)) {
 			
-			ps.setString(1,product.getName());
-    	  	ps.setInt(2,product.getStock());
+			ps.setInt(1,product.getStock());
+			ps.setString(2,product.getName());
 			ps.executeUpdate();
 			
 	    } catch (SQLException e) {
