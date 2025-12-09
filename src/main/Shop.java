@@ -19,11 +19,12 @@ import java.util.Scanner;
 
 import dao.Dao;
 import dao.DaoImplFile;
+import dao.DaoImplHibernate;
 import dao.DaoImplJDBC;
 
 public class Shop {
 	
-	private Dao dao = new DaoImplJDBC();
+	private Dao dao = new DaoImplHibernate();
 	private Amount cash = new Amount(100.00);
 //	private Product[] inventory;
 	private ArrayList<Product> inventory;
