@@ -1,14 +1,44 @@
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name="inventory")
 public class Product {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, nullable = true)
 	private int id;
-    private String name;
+    
+	@Column
+	private String name;
+	
+	@Column
+    private double price;
+
+	@Transient
     private Amount publicPrice;
+    
+    @Transient
     private Amount wholesalerPrice;
+    
+    @Column
     private boolean available;
+    
+    @Column
     private int stock;
+    
+    @Transient
     private static int totalProducts;
     
+    @Transient
     public final static double EXPIRATION_RATE=0.60;
     
 	public Product(String name, Amount wholesalerPrice, boolean available, int stock) {
@@ -32,6 +62,9 @@ public class Product {
 		this.stock = stock;
 	}
 
+	public Product() {
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -48,8 +81,14 @@ public class Product {
 		this.name = name;
 	}
 
+	public double getPrice() {
+		return price;
+	}
 	
-
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
 	public Amount getPublicPrice() {
 		return publicPrice;
 	}
