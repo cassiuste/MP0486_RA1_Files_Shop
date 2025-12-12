@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
@@ -14,12 +16,12 @@ import model.Product;
 public class DaoImplHibernate implements Dao{
 
 	private Session session;
-	private org.hibernate.Transaction transaction;
+	private Transaction transaction;
 
 	@Override
 	public void connect() {
 		Configuration configuration = new Configuration().configure();
-		org.hibernate.SessionFactory sessionFactory = configuration.buildSessionFactory();
+		SessionFactory sessionFactory = configuration.buildSessionFactory();
     	session = sessionFactory.openSession();
 	}
 
@@ -30,15 +32,16 @@ public class DaoImplHibernate implements Dao{
 
 	@Override
 	public ArrayList<Product> getInventory() {
+		this.connect();
 		ArrayList<Product> inventory = new ArrayList<>();
 
 		try {
 			transaction = session.beginTransaction();
 
 			// We create a manual query. Remember that "*" does not exist
-			Query<Product> query = session.createQuery("select u from inventory u");
+			Query<Product> query = session.createQuery("select u from Product u");
 
-			// We get a List of Users
+			// We get a List of products
 			List<Product> products = query.list();
 
 			inventory.addAll(products);
@@ -48,14 +51,14 @@ public class DaoImplHibernate implements Dao{
 			}
 
 			transaction.commit();
-			System.out.println("Get All Successfully.");
+			System.out.println("GetInventory Successfully.");
 
 		} catch (HibernateException e) {
 			if (transaction != null)
 				transaction.rollback(); // Roll back if any exception occurs.
 			e.printStackTrace();
 		}
-
+		this.disconnect();
 		return inventory;
 	}
 
