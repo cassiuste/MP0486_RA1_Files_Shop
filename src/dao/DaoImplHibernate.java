@@ -32,10 +32,9 @@ public class DaoImplHibernate implements Dao{
 
 	@Override
 	public ArrayList<Product> getInventory() {
-		this.connect();
 		ArrayList<Product> inventory = new ArrayList<>();
-
 		try {
+			this.connect();
 			transaction = session.beginTransaction();
 
 			// We create a manual query. Remember that "*" does not exist
@@ -58,7 +57,9 @@ public class DaoImplHibernate implements Dao{
 				transaction.rollback(); // Roll back if any exception occurs.
 			e.printStackTrace();
 		}
-		this.disconnect();
+		finally {
+			this.disconnect();
+		}
 		return inventory;
 	}
 
@@ -76,19 +77,64 @@ public class DaoImplHibernate implements Dao{
 
 	@Override
 	public void addProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+		try {
+			this.connect();
+			transaction = session.beginTransaction();
+			session.save(product);
+			transaction.commit();
+		} catch (HibernateException e) {
+			if (transaction != null)
+				transaction.rollback(); // Roll back if any exception occurs.
+			e.printStackTrace();
+		}
+		finally {
+			this.disconnect();
+		}
 	}
 
 	@Override
 	public void updateProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+		try {
+			this.connect();
+			transaction = session.beginTransaction();
+			
+			Query<Product> query = session.createQuery("select u from Product u where u.name = :name",Product.class);
+				
+			query.setParameter("name", product.getName());
+
+			Product originalProduct = query.uniqueResult();
+		    
+			if (originalProduct != null) {
+		    	originalProduct.setStock(product.getStock());
+		    }
+			
+			transaction.commit();
+		} catch (HibernateException e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			this.disconnect();
+		}
 	}
 
 	@Override
 	public void deleteProduct(int productId) {
-		// TODO Auto-generated method stub
+		try {
+			this.connect();
+			transaction = session.beginTransaction();
+			Product product = session.get(Product.class, productId);
+			session.delete(product);
+			transaction.commit();
+		} catch (HibernateException e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			this.disconnect();
+		}
 		
 	}
 
