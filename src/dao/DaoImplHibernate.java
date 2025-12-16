@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 
 import model.Employee;
 import model.Product;
+import model.ProductHistory;
 
 public class DaoImplHibernate implements Dao{
 
@@ -65,7 +66,23 @@ public class DaoImplHibernate implements Dao{
 
 	@Override
 	public boolean writeInventory(ArrayList<Product> products) {
-		// TODO Auto-generated method stub
+		try {
+			this.connect();
+			transaction = session.beginTransaction();
+			for(Product product : products) {
+				ProductHistory productHistory = new ProductHistory(product);
+				session.save(productHistory);
+			}
+			transaction.commit();
+			return true;
+		} catch (HibernateException e) {
+			if (transaction != null)
+				transaction.rollback();
+			e.printStackTrace();
+		}
+		finally {
+			this.disconnect();
+		}
 		return false;
 	}
 
@@ -84,7 +101,7 @@ public class DaoImplHibernate implements Dao{
 			transaction.commit();
 		} catch (HibernateException e) {
 			if (transaction != null)
-				transaction.rollback(); // Roll back if any exception occurs.
+				transaction.rollback();
 			e.printStackTrace();
 		}
 		finally {
