@@ -1,6 +1,12 @@
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class Person {
+	
+	@Column
 	protected String name;
 	
 	public Person() {

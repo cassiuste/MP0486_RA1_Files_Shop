@@ -221,6 +221,7 @@ public class Shop {
 	 */
 	private void readInventory() {
 		setInventory(dao.getInventory());
+		System.out.println(inventory);
 	}
 	
 	public boolean writeInventory() {
