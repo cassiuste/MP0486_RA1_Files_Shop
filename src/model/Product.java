@@ -46,8 +46,8 @@ public class Product {
 		this.id = totalProducts+1;
 		this.name = name;
 		this.wholesalerPrice = wholesalerPrice;
+		this.price = getWholesalerPrice().getValue();
 		this.publicPrice = new Amount(wholesalerPrice.getValue() * 2);
-		this.price = getPublicPrice().getValue();
 		this.available = available;
 		this.stock = stock;
 		totalProducts++;
@@ -58,8 +58,8 @@ public class Product {
 		this.id = id;
 		this.name = name;
 		this.wholesalerPrice = wholesalerPrice;
+		this.price = getWholesalerPrice().getValue();
 		this.publicPrice = new Amount(wholesalerPrice.getValue() * 2);
-		this.price = getPublicPrice().getValue();
 		this.available = available;
 		this.stock = stock;
 	}
