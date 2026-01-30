@@ -25,7 +25,7 @@ public class Employee extends Person implements Logable{
 	private String password;
 	// connection using JDBC SQL
 	@Transient
-	private Dao dao = new DaoImplHibernate();
+	private Dao dao = new DaoImplMongoDB();
 	
 //	public static final int USER = 123;
 //	public static final String PASSWORD = "test";
