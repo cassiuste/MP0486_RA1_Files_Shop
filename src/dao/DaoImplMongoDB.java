@@ -1,16 +1,32 @@
 package dao;
 
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.and;
+
+
 import java.util.ArrayList;
+
+import org.bson.Document;
+
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 import model.Employee;
 import model.Product;
 
 public class DaoImplMongoDB implements Dao {
-
+	
+	MongoCollection<Document> collection;
+	private MongoDatabase mongoDatabase;
+	
 	@Override
 	public void connect() {
-		// TODO Auto-generated method stub
-		
+		String uri = "mongodb://localhost:27017";
+		MongoClientURI mongoClientURI = new MongoClientURI(uri);
+		MongoClient mongoClient = new MongoClient(mongoClientURI);
+		mongoDatabase = mongoClient.getDatabase("shop");
 	}
 
 	@Override
@@ -33,8 +49,15 @@ public class DaoImplMongoDB implements Dao {
 
 	@Override
 	public Employee getEmployee(int employeeId, String password) {
-		// TODO Auto-generated method stub
-		return null;
+		collection = mongoDatabase.getCollection("users");
+		Employee employee = null;
+		Document document = collection.find(
+		        and(eq("id", employeeId), eq("password", password))
+				).first();;
+		if (document != null) {
+			employee = new Employee(document.getInteger("id"), document.getString("name"), document.getString("password"));			
+		}
+		return employee;
 	}
 
 	@Override
