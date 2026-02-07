@@ -62,6 +62,7 @@ public class Product {
 		this.publicPrice = new Amount(wholesalerPrice.getValue() * 2);
 		this.available = available;
 		this.stock = stock;
+		totalProducts++;
 	}
 
 	public Product() {

@@ -251,7 +251,7 @@ public class Shop {
 		double wholesalerPrice = scanner.nextDouble();
 		System.out.print("Stock: ");
 		int stock = scanner.nextInt();
-
+		
 		addProduct(new Product(name, new Amount(wholesalerPrice), true, stock));
 	}
 
