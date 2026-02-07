@@ -3,6 +3,8 @@ package dao;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.and;
 
+import static com.mongodb.client.model.Updates.combine;
+import static com.mongodb.client.model.Updates.set;
 
 import java.util.ArrayList;
 
@@ -80,20 +82,28 @@ public class DaoImplMongoDB implements Dao {
 
 	@Override
 	public void addProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+		this.connect();
+		collection = mongoDatabase.getCollection("inventory");
+		Document document = new Document("name", product.getName())
+				.append("wholesalerPrice", new Document("value", product.getWholesalerPrice().getValue()))
+				.append("available", product.isAvailable())
+				.append("stock", product.getStock());
+		collection.insertOne(document);
 	}
 
 	@Override
 	public void updateProduct(Product product) {
-		// TODO Auto-generated method stub
-		
+		this.connect();
+		collection = mongoDatabase.getCollection("inventory");
+		collection.updateOne(eq("name", product.getName()),
+							combine(set("stock", product.getStock())));
 	}
 
 	@Override
 	public void deleteProduct(int productId) {
-		// TODO Auto-generated method stub
-		
+		 this.connect();
+		 collection = mongoDatabase.getCollection("inventory");
+		 collection.deleteOne(eq("id", productId));		
 	}
 
 }
