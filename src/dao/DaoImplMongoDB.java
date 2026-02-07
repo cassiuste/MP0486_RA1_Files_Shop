@@ -13,6 +13,7 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import model.Amount;
 import model.Employee;
 import model.Product;
 
@@ -37,8 +38,24 @@ public class DaoImplMongoDB implements Dao {
 
 	@Override
 	public ArrayList<Product> getInventory() {
-		// TODO Auto-generated method stub
-		return null;
+		this.connect();
+		collection = mongoDatabase.getCollection("inventory");
+		ArrayList<Product> inventory = new ArrayList<Product>();		
+		for (Document document : collection.find()) {
+			Document amountObject = (Document) document.get("wholesalerPrice");
+			
+			Number value = (Number) amountObject.get("value");
+			Amount wholesalerPrice = new Amount(value.doubleValue());
+			
+			
+			int id = document.getInteger("id");
+			String name = document.getString("name");
+			int stock = document.getInteger("stock");
+			
+			Product product = new Product(id, name, wholesalerPrice, true, stock);
+			inventory.add(product);
+		}
+		return inventory;
 	}
 
 	@Override
@@ -49,6 +66,7 @@ public class DaoImplMongoDB implements Dao {
 
 	@Override
 	public Employee getEmployee(int employeeId, String password) {
+		this.connect();
 		collection = mongoDatabase.getCollection("users");
 		Employee employee = null;
 		Document document = collection.find(
