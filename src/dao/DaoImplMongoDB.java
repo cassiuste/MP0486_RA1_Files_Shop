@@ -7,6 +7,7 @@ import static com.mongodb.client.model.Updates.combine;
 import static com.mongodb.client.model.Updates.set;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.bson.Document;
 
@@ -35,7 +36,6 @@ public class DaoImplMongoDB implements Dao {
 	@Override
 	public void disconnect() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -49,7 +49,6 @@ public class DaoImplMongoDB implements Dao {
 			Number value = (Number) amountObject.get("value");
 			Amount wholesalerPrice = new Amount(value.doubleValue());
 			
-			
 			int id = document.getInteger("id");
 			String name = document.getString("name");
 			int stock = document.getInteger("stock");
@@ -62,8 +61,28 @@ public class DaoImplMongoDB implements Dao {
 
 	@Override
 	public boolean writeInventory(ArrayList<Product> products) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean result = false; 
+		if (products == null || products.isEmpty()) {
+			return result;
+		}
+		this.connect();
+		collection = mongoDatabase.getCollection("historical_inventory");
+		try {
+			for (Product product : products) {
+				Document document = new Document("id", product.getId())
+						.append("name", product.getName())
+						.append("wholesalerPrice", new Document("value", product.getWholesalerPrice().getValue())
+																.append("currency", "€"))
+						.append("available", product.isAvailable())
+						.append("stock", product.getStock())
+						.append("created_at", new Date());
+						collection.insertOne(document);
+			}
+			result = true;
+		} catch (Exception e) {
+			result = false;
+		}
+		return result;
 	}
 
 	@Override
@@ -84,8 +103,10 @@ public class DaoImplMongoDB implements Dao {
 	public void addProduct(Product product) {
 		this.connect();
 		collection = mongoDatabase.getCollection("inventory");
-		Document document = new Document("name", product.getName())
-				.append("wholesalerPrice", new Document("value", product.getWholesalerPrice().getValue()))
+		product.setId((int) collection.countDocuments() + 1);
+		Document document = new Document("id", product.getId())
+				.append("name", product.getName())
+				.append("wholesalerPrice", new Document("value", product.getWholesalerPrice().getValue()).append("currency", "€"))
 				.append("available", product.isAvailable())
 				.append("stock", product.getStock());
 		collection.insertOne(document);
