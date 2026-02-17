@@ -24,6 +24,7 @@ public class DaoImplMongoDB implements Dao {
 	
 	MongoCollection<Document> collection;
 	private MongoDatabase mongoDatabase;
+	private MongoClient mongoClient;
 	
 	@Override
 	public void connect() {
@@ -35,7 +36,9 @@ public class DaoImplMongoDB implements Dao {
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
+		if (mongoClient != null) {
+			mongoClient.close();
+		}
 	}
 
 	@Override
@@ -56,6 +59,7 @@ public class DaoImplMongoDB implements Dao {
 			Product product = new Product(id, name, wholesalerPrice, true, stock);
 			inventory.add(product);
 		}
+		this.disconnect();
 		return inventory;
 	}
 
@@ -82,6 +86,7 @@ public class DaoImplMongoDB implements Dao {
 		} catch (Exception e) {
 			result = false;
 		}
+		this.disconnect();
 		return result;
 	}
 
@@ -96,6 +101,7 @@ public class DaoImplMongoDB implements Dao {
 		if (document != null) {
 			employee = new Employee(document.getInteger("id"), document.getString("name"), document.getString("password"));			
 		}
+		 this.disconnect();
 		return employee;
 	}
 
@@ -110,6 +116,7 @@ public class DaoImplMongoDB implements Dao {
 				.append("available", product.isAvailable())
 				.append("stock", product.getStock());
 		collection.insertOne(document);
+		 this.disconnect();
 	}
 
 	@Override
@@ -118,13 +125,15 @@ public class DaoImplMongoDB implements Dao {
 		collection = mongoDatabase.getCollection("inventory");
 		collection.updateOne(eq("name", product.getName()),
 							combine(set("stock", product.getStock())));
+		 this.disconnect();
 	}
 
 	@Override
 	public void deleteProduct(int productId) {
 		 this.connect();
 		 collection = mongoDatabase.getCollection("inventory");
-		 collection.deleteOne(eq("id", productId));		
+		 collection.deleteOne(eq("id", productId));
+		 this.disconnect();
 	}
 
 }
