@@ -494,19 +494,23 @@ public class Shop {
 			return;
 		}
 		dao.addProduct(product);
-//		inventory.add(product);
+		inventory.add(product);
 		numberProducts++;
-		this.readInventory();
 	}
 	
 	public void updateProduct(Product product) {
 		dao.updateProduct(product);
-		this.readInventory();
 	}
 	
 	public void deleteProduct(int productId) {
 		dao.deleteProduct(productId);
-		this.readInventory();
+		for (int i = 0; i < inventory.size(); i++) {
+			if (inventory.get(i) != null && inventory.get(i).getId() == productId) {
+				inventory.remove(i);
+				numberProducts--;
+				return;
+			}
+		}
 	}
 
 	/**
