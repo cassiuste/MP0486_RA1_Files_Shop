@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -73,7 +74,8 @@ public class DaoImplMongoDB implements Dao {
 		collection = mongoDatabase.getCollection("historical_inventory");
 		try {
 			for (Product product : products) {
-				Document document = new Document("id", product.getId())
+				Document document = new Document("_id", new ObjectId())
+						.append("id", product.getId())
 						.append("name", product.getName())
 						.append("wholesalerPrice", new Document("value", product.getWholesalerPrice().getValue())
 																.append("currency", "€"))
@@ -109,8 +111,8 @@ public class DaoImplMongoDB implements Dao {
 	public void addProduct(Product product) {
 		this.connect();
 		collection = mongoDatabase.getCollection("inventory");
-		product.setId((int) collection.countDocuments() + 1);
-		Document document = new Document("id", product.getId())
+		Document document = new Document("_id", new ObjectId())
+				.append("id", product.getId())
 				.append("name", product.getName())
 				.append("wholesalerPrice", new Document("value", product.getWholesalerPrice().getValue()).append("currency", "€"))
 				.append("available", product.isAvailable())
