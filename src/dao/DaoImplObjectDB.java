@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
 import model.Employee;
 import model.Product;
 
-public class DaoImplObjectDb implements Dao{
+public class DaoImplObjectDB implements Dao{
 
 	private EntityManager em;
 	

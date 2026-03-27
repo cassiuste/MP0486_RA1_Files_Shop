@@ -25,7 +25,7 @@ public class Employee extends Person implements Logable{
 	private String password;
 	// connection using JDBC SQL
 	@Transient
-	private Dao dao = new DaoImplObjectDb();
+	private Dao dao = new DaoImplObjectDB();
 	
 //	public static final int USER = 123;
 //	public static final String PASSWORD = "test";
